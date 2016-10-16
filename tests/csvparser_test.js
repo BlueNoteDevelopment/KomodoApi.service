@@ -58,6 +58,76 @@ suite('CSVPARSER Module Tests', function () {
         done();
     });
     
+    test('should load csv file async and return 200 rows data', function (done) {
+        var parser = require(libFileLocation);
+        var filename = './tests/datafiles/csv_test.csv';
+        
+        parser.loadCSVFile(filename, (function(error,data){
+            if(error){
+                throw error;
+            }
+            var options = parser.createOptionObject();
+            assert(data !=='' && data!==undefined);
+            
+            var table = parser.extractDataBrickToTable(data,options);
+            assert(table.Rows.length===200);
+            assert(table.Cols.length===8);
+            done();
+        }));
+        
+    });
     
+    test('should throw error if no csv data is passed in', function (done) {
+        var parser = require(libFileLocation);
+        assert.throws(function(){parser.extractDataBrickToTable('');},Error,'No Data Available to Parse');
+        done();
+    });
+    
+    test('should load csv file async and return 5 rows data', function (done) {
+        var parser = require(libFileLocation);
+        var filename = './tests/datafiles/csv_test.csv';
+        
+        parser.loadCSVFile(filename, (function(error,data){
+            if(error){
+                throw error;
+            }
+            var options = parser.createOptionObject();
+            options.startRow = 1;
+            options.endRow = 5;
+            
+            
+            var table = parser.extractDataBrickToTable(data,options);
+            //console.log(JSON.stringify(table));
+            assert(data !=='' && data!==undefined);
+            assert(table.Rows.length===5);
+            assert(table.Cols.length===8);
+            done();
+        }));
+        
+    });
+    
+    test('should load csv file async and return 2 columns data and 5 rows', function (done) {
+        var parser = require(libFileLocation);
+        var filename = './tests/datafiles/csv_test.csv';
+        
+        parser.loadCSVFile(filename, (function(error,data){
+            if(error){
+                throw error;
+            }
+            var options = parser.createOptionObject();
+            options.startRow = 1;
+            options.endRow = 5;
+            options.startCol = 1;
+            options.endCol = 2;
+            
+            var table = parser.extractDataBrickToTable(data,options);
+            //console.log(JSON.stringify(table));
+            assert(data !=='' && data!==undefined);
+            assert(table.Rows.length===5);
+            assert(table.Cols.length===2);
+            done();
+        }));
+        
+    });
     
 });
