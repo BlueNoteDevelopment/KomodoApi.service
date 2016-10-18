@@ -1,28 +1,34 @@
 {
-    "name": "KomodoApi.Service",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "smitchel",
-    "contributors": [],
-    "dependencies": {
-        "js-csvparser": "^1.5.0",
-        "xlsx": "^0.8.0",
-        "body-parser": "^1.15.2",
-        "edge": "^5.9.2",
-        "express": "^4.14.0"
-    },
+  "name": "KomodoApi.Service",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Seth W. Mitchell",
+  "contributors": [],
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "edge": "^5.9.2",
+    "express": "^4.14.0",
+    "js-csvparser": "^1.5.0",
+    "restler": "^3.4.0",
+    "xlsx": "^0.8.0"
+  },
   "scripts": {
     "start": "node service_main_node.js",
     "test xlsparser": "mocha tests\\xlsparser_test.js -u tdd",
     "test csvparser": "mocha tests\\csvparser_test.js -u tdd",
-    "test odbc": "mocha tests\\odbc_api_test.js -u tdd"
+    "test odbc": "mocha tests\\odbc_api_test.js -u tdd",
+    "test logger": "mocha tests\\logger_test.js -u tdd"
   },
-  "author": "Seth W. Mitchell",
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
-    "mocha": "^3.1.0",
-    "restler": "^3.4.0"
+    "mocha": "^3.1.0"
   }
 }

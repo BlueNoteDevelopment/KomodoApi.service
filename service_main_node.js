@@ -88,6 +88,14 @@ app.post('/api/mssqlQuery',function(req,res){
     
 });
 
+//logging
+app.post('/api/logging',function(req,res){
+    console.log('api logging attach - ' + req.body.server);
+    var logger = require("lib/logger");
+
+   
+    
+});
 
 
 
