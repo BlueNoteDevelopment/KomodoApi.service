@@ -109,10 +109,27 @@ app.post('/api/logging',function(req,res){
  * 
  */
 
-
+initializeService();
 
 
 
 app.listen(app.get('port'),function(){
     console.log('ODBC Connection Manager Started on port ' + app.get('port') );    
 });
+
+
+//include any startup code i.e. creating runtime folders, get settings, etc
+function initializeService(){
+    
+    var fse = require('fs-extra');
+    
+    //create tmp/logs under root
+    fse.mkdirp(__dirname + "/tmp/logs",'0777',function(error){
+        if(error){
+            if(error.code !== 'EEXIST'){console.log(error.message);}
+        }
+    });
+    
+    
+    
+}
