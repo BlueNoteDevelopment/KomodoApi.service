@@ -16,7 +16,7 @@ suite('LOGGER Module Tests', function () {
     test('should create an empty logentry object', function (done) {
         var log = require(libFileLocation);
         var obj = log.createLogEntryObject();
-        //console.log(JSON.stringify(obj));
+        console.log(JSON.stringify(obj));
         assert.isNotNull(obj);
         done();
     });
