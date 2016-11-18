@@ -6,7 +6,7 @@ config.logging = {};
 
 
 config.internalApi.port = 18963;
-config.logging.folder = './lib/';
+config.logging.folder = './tmp/logs';
 
 
 module.exports = config;

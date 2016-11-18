@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var edge = require('edge');
+var config = require('./config');
 
 app = express();
 
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //set the listening Port
-app.set('port',18963);
+app.set('port',config.internalApi.port);
 //switch odbc lib path when debugging in .Net
 //app.set('odbc_lib_path','C:\\Projects\\komodoApi\\Edge\\database.edge.lib\\database.edge.lib\\bin\\x64\\Debug\\');
 app.set('odbc_lib_path','bin/');
@@ -91,9 +92,29 @@ app.post('/api/mssqlQuery',function(req,res){
 //logging
 app.post('/api/logging',function(req,res){
     console.log('api logging attach - ' + req.body.server);
-    var logger = require("lib/logger");
+    var logger = require("./lib/logger");
     
-
+    var entry = logger.createLogEntryObject();
+    
+    console.log(req);
+    
+    entry.logName = req.body.logName;
+    entry.message = req.body.message;
+    entry.level = req.body.level;
+    entry.objectDate = req.body.objectData;
+    entry.clientId = req.body.clientId;
+    entry.persistTo = req.body.persistTo;
+    entry.collectionId = req.body.collectioinId;
+   
+   logger.addLogEntry(entry,config.logging.folder,function(error, success){
+       if(error){
+            res.status(500).send(error);
+            console.log(error);
+       }else{
+           res.json({result: success });
+       }
+       
+   });
    
     
 });
@@ -114,7 +135,7 @@ initializeService();
 
 
 app.listen(app.get('port'),function(){
-    console.log('ODBC Connection Manager Started on port ' + app.get('port') );    
+    console.log('KomodoApi Service Started on port ' + app.get('port') );    
 });
 
 
