@@ -3,7 +3,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var edge = require('edge');
-var config = require('./config');
+var config = require('./lib/service.config');
+
+initializeService();
+
 
 app = express();
 
@@ -12,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //set the listening Port
-app.set('port',config.internalApi.port);
+app.set('port',config.settings.internalApi.port);
 //switch odbc lib path when debugging in .Net
 //app.set('odbc_lib_path','C:\\Projects\\komodoApi\\Edge\\database.edge.lib\\database.edge.lib\\bin\\x64\\Debug\\');
 app.set('odbc_lib_path','bin/');
@@ -130,7 +133,7 @@ app.post('/api/logging',function(req,res){
  * 
  */
 
-initializeService();
+
 
 
 
@@ -151,6 +154,20 @@ function initializeService(){
         }
     });
     
+    fse.mkdirp(__dirname + "/etc",'0777',function(error){
+        if(error){
+            if(error.code !== 'EEXIST'){console.log(error.message);}
+        }
+    });
     
+    config.load(__dirname + "/etc/service.config.dat",function(error){
+        if(error){
+            console.log("Config file not loaded:" + error.message + ". Using defaults");
+        }else{
+            console.log(JSON.stringify(config));
+        }
+
+    });
     
+
 }
