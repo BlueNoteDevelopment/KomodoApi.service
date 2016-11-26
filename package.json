@@ -17,7 +17,6 @@
     "express": "^4.14.0",
     "fs-extra": "^0.30.0",
     "js-csvparser": "^1.5.0",
-    "js-yaml": "^3.7.0",
     "restler": "^3.4.0",
     "xlsx": "^0.8.0"
   },
@@ -27,7 +26,9 @@
     "test csvparser": "mocha tests\\csvparser_test.js -u tdd",
     "test odbc": "mocha tests\\odbc_api_test.js -u tdd",
     "test logger": "mocha tests\\logger_test.js -u tdd",
-    "test utility": "mocha tests\\utility_test.js -u tdd"
+    "test utility": "mocha tests\\utility_test.js -u tdd",
+    "test runtime storage": "mocha tests\\runtimestorage_test.js -u tdd",
+    "test execution context": "mocha tests\\exec_context_test.js -u tdd"
   },
   "license": "ISC",
   "devDependencies": {
