@@ -111,7 +111,7 @@ initializeService(function () {
         entry.persistTo = req.body.persistTo;
         entry.collectionId = req.body.collectioinId;
 
-        logger.addLogEntry(entry, config.logging.folder, function (error, success) {
+        logger.addLogEntry(entry, config.settings.logging.folder, function (error, success) {
             if (error) {
                 res.status(500).send(error);
                 console.log(error);
