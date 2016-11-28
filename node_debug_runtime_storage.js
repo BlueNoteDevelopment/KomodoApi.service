@@ -5,6 +5,7 @@
  */
 
 
+
 var rs = require('./lib/runtime-storage');
 
 
@@ -22,3 +23,4 @@ var sucess = rs.saveSettingSync('./tmp/settings.txt','TestSection2','TestName',2
         
         console.log(context1.CollectionConfig.name);
         console.log(context2.CollectionConfig.name);
+
