@@ -11,12 +11,15 @@
   "author": "Seth W. Mitchell",
   "contributors": [],
   "dependencies": {
+    "asyncawait": "^1.0.6",
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "chokidar": "^1.6.1",
     "edge": "^5.9.2",
     "express": "^4.14.0",
     "fs-extra": "^0.30.0",
     "js-csvparser": "^1.5.0",
+    "lodash": "^4.17.2",
     "restler": "^3.4.0",
     "xlsx": "^0.8.0"
   },

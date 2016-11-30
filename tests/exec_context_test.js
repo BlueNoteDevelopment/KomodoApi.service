@@ -40,7 +40,7 @@ suite('ExecutionContext Module Tests', function () {
 
         
         //console.log(context1.CollectionConfig.name);
-        console.log(JSON.stringify(config));
+       // console.log(JSON.stringify(config));
         
         assert(context1.CollectionConfig.name === 'Test Config' );
         assert(context1.CollectionConfig.dataSourceType === 'xls' );
@@ -49,4 +49,55 @@ suite('ExecutionContext Module Tests', function () {
     
     
     
+});
+
+
+suite('Execution Manager Module Tests', function () {
+    
+    var libFileLocation = '../lib/execution-manager';
+    var libConfigLocation = '../lib/collection-config-factory';
+    var libExecContextLocation = '../lib/execution-context';
+    var pathConfigFiles = __dirname + '/konfig/';
+    var pathProcessing = __dirname + "/temp/processing"
+
+    suiteSetup(function () {
+        fs = require('fs-extra');
+        fs.emptyDirSync(pathConfigFiles);
+        
+        fs.mkdirpSync(pathProcessing, '0777');
+        fs.emptyDirSync(pathProcessing);
+        
+        
+        var ConfigFactory = require(libConfigLocation);
+       
+        var config = ConfigFactory.Create('Test Config','xls');
+        config.dataSource.folderToWatch = pathProcessing;
+        
+        fs.writeJsonSync(pathConfigFiles + 'TestConfig.konfig',config,{encoding: 'utf-8'});
+        
+    });
+
+    test('should get version from ExecutionManager', function (done) {
+        var ExecutionManager = require(libFileLocation);
+    
+        assert(ExecutionManager.version === '1.0.0.0');
+        done();
+    });
+ 
+    test('should get load 1 file  from konfig folder', function (done) {
+        var exec = require(libFileLocation);
+
+        exec.init(pathConfigFiles,function(evt,data){
+            
+            if(evt = 'INITCOMPLETE'){
+                assert(exec.getExecutionContextCount() ===1);
+            }
+            
+            done();
+        });
+        
+
+        
+    });
+
 });
