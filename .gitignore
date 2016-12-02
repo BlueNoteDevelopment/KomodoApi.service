@@ -43,4 +43,5 @@ jspm_packages
 #nbproject
 
 #test data
-/test/konfig/*.konfig
+/tests/konfig/*.konfig
+*.konfig

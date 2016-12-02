@@ -60,6 +60,7 @@ suite('Execution Manager Module Tests', function () {
     var pathConfigFiles = __dirname + '/konfig/';
     var pathProcessing = __dirname + "/temp/processing"
 
+    var maxTestFiles = 50;
     suiteSetup(function () {
         fs = require('fs-extra');
         fs.emptyDirSync(pathConfigFiles);
@@ -69,11 +70,13 @@ suite('Execution Manager Module Tests', function () {
         
         
         var ConfigFactory = require(libConfigLocation);
-       
-        var config = ConfigFactory.Create('Test Config','xls');
-        config.dataSource.folderToWatch = pathProcessing;
         
-        fs.writeJsonSync(pathConfigFiles + 'TestConfig.konfig',config,{encoding: 'utf-8'});
+        for(i=1;i<=maxTestFiles;i++){
+            var config = ConfigFactory.Create('Test Config' + i,'xls');
+            config.dataSource.folderToWatch = pathProcessing;
+            fs.writeJsonSync(pathConfigFiles + 'TestConfig' + i + '.konfig',config,{encoding: 'utf-8'});
+        }
+
         
     });
 
@@ -84,17 +87,41 @@ suite('Execution Manager Module Tests', function () {
         done();
     });
  
-    test('should get load 1 file  from konfig folder', function (done) {
+    test('should get load all files from konfig folder', function (done) {
         var exec = require(libFileLocation);
 
         exec.init(pathConfigFiles,function(evt,data){
             
-            if(evt = 'INITCOMPLETE'){
-                assert(exec.getExecutionContextCount() ===1);
+            //console.log(evt);
+            if(evt === 'INITCOMPLETE'){
+                //console.log(JSON.stringify(data));
+                assert(exec.getExecutionContextCount() ===maxTestFiles);
+                
             }
             
             done();
         });
+        
+
+        
+    });
+    
+    
+    test('should throw error reading directory', function (done) {
+    var exec = require(libFileLocation);
+
+    exec.init('X:\\',function(evt,data){
+
+        //console.log(evt);
+        if(evt === 'INITCOMPLETE'){
+            assert(3===5); //fail
+        }else if(evt === 'ERROR' ){
+            //console.log(JSON.stringify(data));
+            assert(data.operation ==='load konfig directory')
+        }
+
+        done();
+    });
         
 
         
