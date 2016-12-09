@@ -1,13 +1,24 @@
+/* global __dirname */
+
 //Master Service Node that exposes API Endpoint channels for data aquisition, parsing and upload
 //Use express for endo point library
 var express = require('express');
 var bodyParser = require('body-parser');
 var edge = require('edge');
 var config = require('./lib/service-config');
+var logger = require('./lib/logger')
+var cp = require('child_process');
 
+var configfilename = '';
+var executionProcess = null;
+
+require('node-sigint');
 
 //wrap in async function called after service initinalization
 initializeService(function () {
+
+    //fork chiled process
+    startExecutionProcess();
 
 
     app = express();
@@ -132,57 +143,79 @@ initializeService(function () {
 
 });
 
+function startExecutionProcess(){
+    
+    //executionProcess = cp.fork('service_execution_child_node',[],{silent:false, execArgv:['--debug=' + (40894)]});
+    
+    executionProcess = cp.fork('service_execution_child_node',[],{silent:false, execArgv:['--debug=' + (40894)]});
+    
+    executionProcess.send({command:'START',serviceconfig:config});
+    
+    executionProcess.on('message' ,(m)=>{
+            if(m.command==='START'){
+                if(m.data.response === 'OK'){
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    console.log('Execution Process Start Pid:' + executionProcess.pid );
+                    
+                }else{
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    console.log('Execution Process Fail:' + m.data.error.message );
+                }
 
+            }else if(m.command === 'STOP'){
+
+            }else if (m.command === 'ERROR'){
+
+            }
+
+        }
+        
+);
+
+    
+    
+    
+}
+
+function shutdownExecutionProcess(){
+    if(executionProcess){
+        executionProcess.send({command:'STOP',serviceconfig:config});
+    }
+}
 
 
 //include any startup code i.e. creating runtime folders, get settings, etc
 function initializeService(initComplete) {
 
     var fse = require('fs-extra');
-    //create tmp/logs under root
-    fse.mkdirpSync(__dirname + "/tmp/logs", '0777', function (error) {
-        if (error) {
-            if (error.code !== 'EEXIST') {
-                console.log(error.message);
-            }
-        }
-    });
-    
-    fse.mkdirpSync(__dirname + "/tmp/processing", '0777', function (error) {
-        if (error) {
-            if (error.code !== 'EEXIST') {
-                console.log(error.message);
-            }
-        }
-    });
 
-    fse.mkdirpSync(__dirname + "/etc", '0777', function (error) {
-        if (error) {
-            if (error.code !== 'EEXIST') {
-                console.log(error.message);
-            }
-        }
-    });
-    
-    fse.mkdirpSync(__dirname + "/etc/config", '0777', function (error) {
-        if (error) {
-            if (error.code !== 'EEXIST') {
-                console.log(error.message);
-            }
-        }
-    });
-    
+    fse.mkdirpSync(__dirname + "/etc", '0777');
 
-    config.load(__dirname + "/etc/service.config.dat", function (error) {
+    
+    configfilename = __dirname + "/etc/service.config.dat";
+    config.load(configfilename, function (error) {
         if (error) {
             console.log("Config file not loaded:" + error.message + ". Using defaults");
         } else {
             //console.log(JSON.stringify(config));
         }
-
-        initComplete();
-
-
+        //create tmp/logs under root
+        var logfolder = __dirname + "/tmp/logs";
+        fse.mkdirpSync(logfolder, '0777');
+        config.settings.logging.folder =logfolder;
+        
+        var procfolder = __dirname + "/tmp/processing";
+        fse.mkdirpSync(procfolder, '0777');
+        config.settings.processing.processfolder = procfolder;
+        
+        var konfigfolder = __dirname + "/etc/konfig";
+        fse.mkdirpSync(konfigfolder, '0777');
+        config.settings.processing.konfigfolder = konfigfolder;
+        
+        config.save(configfilename,(error,success)=>{
+            initComplete();
+        });
+        
     });
 
 

@@ -72,7 +72,19 @@ suite('LOGGER Module Tests', function () {
          });
     });
 
-
+    test('should write a quick logentry object to file', function (done) {
+        var log = require(libFileLocation);
+    
+        log.addLogQuickEntryLocal('test','Test Message Quick',1,{data:'test',value:1},'./tmp/logs',function(error,success){
+            if(error){
+                console.log(JSON.stringify(error));
+            }
+            assert(success === true);
+            done();   
+             
+         });
+    });
+    
     var base = 'http://localhost:18963';
      
     test('should write a logentry object to file via API', function (done) {
@@ -98,5 +110,7 @@ suite('LOGGER Module Tests', function () {
          
   
     });
+    
+    
     
 });
