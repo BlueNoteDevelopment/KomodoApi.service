@@ -103,6 +103,9 @@ function notificationCallback(event,data){
          var msg = "Execution Manager Started";
         _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
 
+    }else if(event==='CONFIGCHANGE'){
+         var msg = "Execution Context Changed: "  + data.operation;
+        _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
     }
     
     
