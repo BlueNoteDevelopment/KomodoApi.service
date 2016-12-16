@@ -79,7 +79,7 @@ function initialize(config,callback){
     }
     
     _service_config = config;
-    _exec_manager.init(_service_config.settings.processing.konfigfolder,notificationCallback);
+    _exec_manager.init(_service_config,notificationCallback);
     
     
     return callback(null,true);
