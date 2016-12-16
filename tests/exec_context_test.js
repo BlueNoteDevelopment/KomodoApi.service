@@ -78,6 +78,8 @@ suite('Execution Manager Module Tests', function () {
     var libFileLocation = '../lib/execution-manager';
     var libConfigLocation = '../lib/collection-config-factory';
     var libExecContextLocation = '../lib/execution-context';
+    var config = require('../lib/service-config');
+    
     var pathConfigFiles = __dirname + '/konfig/';
     var pathProcessing = __dirname + "/temp/processing"
 
@@ -110,8 +112,9 @@ suite('Execution Manager Module Tests', function () {
  
     test('should get load all files from konfig folder', function (done) {
         var exec = require(libFileLocation);
-
-        exec.init(pathConfigFiles,function(evt,data){
+        config.settings.processing.konfigfolder = pathConfigFiles;
+        
+        exec.init(config,function(evt,data){
             
             //console.log(evt);
             if(evt === 'INITCOMPLETE'){
@@ -130,8 +133,8 @@ suite('Execution Manager Module Tests', function () {
     
     test('should throw error reading directory', function (done) {
     var exec = require(libFileLocation);
-
-    exec.init('X:\\',function(evt,data){
+    config.settings.processing.konfigfolder = 'X:\\';
+    exec.init(config,function(evt,data){
 
         //console.log(evt);
         if(evt === 'INITCOMPLETE'){
