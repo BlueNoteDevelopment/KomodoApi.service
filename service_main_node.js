@@ -134,6 +134,22 @@ initializeService(function () {
 
 
     });
+    
+    //konfig
+    app.get('/api/konfigfactory/:datasource', function (req, res) {
+        console.log('api GET');
+        
+        try{
+            var factory = require('./lib/collection-config-factory');
+            var result = factory.Create('',req.params.datasource);
+            res.setHeader('Content-Type', 'application/json');
+            res.json(JSON.stringify(result));
+        }catch(e){
+            res.status(500).send(e);
+            console.log(e);
+        }
+        
+      });    
 
 
     app.listen(app.get('port'), function () {
@@ -145,7 +161,7 @@ initializeService(function () {
 
 function startExecutionProcess(){
     
-    //executionProcess = cp.fork('service_execution_child_node',[],{silent:false, execArgv:['--debug=' + (40894)]});
+    //executionProcess = cp.fork('service_execution_child_node');
     
     executionProcess = cp.fork('service_execution_child_node',[],{silent:false, execArgv:['--debug=' + (40894)]});
     

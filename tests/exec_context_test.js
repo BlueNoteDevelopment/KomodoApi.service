@@ -24,7 +24,7 @@ suite('ExecutionContext Module Tests', function () {
         
         //console.log(context1.CollectionConfig.name);
         //console.log(context2.CollectionConfig.name);
-        
+
         assert(context1.CollectionConfig.name !== context2.CollectionConfig.name );
         done();
     });
@@ -37,7 +37,7 @@ suite('ExecutionContext Module Tests', function () {
         var config = ConfigFactory.Create('Test Config','xls');
         
         var context1 = new ExecutionContext(config);
-
+        context1.Start((e,s)=>{});
         
         //console.log(context1.CollectionConfig.name);
        // console.log(JSON.stringify(config));
@@ -47,7 +47,28 @@ suite('ExecutionContext Module Tests', function () {
         done();
     });
     
-    
+        
+    test('should create 2 ExecutionContext objects for xls data type and start', function (done) {
+        var ExecutionContext = require(libFileLocation);
+        var ConfigFactory = require(libConfigLocation);
+       
+        var config = ConfigFactory.Create('Test Config','xls');
+        var context1 = new ExecutionContext(config);
+        
+         var config2 = ConfigFactory.Create('Test Config 2','xls');
+        var context2 = new ExecutionContext(config2);       
+        
+        context1.Start((e,s)=>{});
+        context2.Start((e,s)=>{});
+        context1.Start((e,s)=>{});
+        
+        //console.log(context1.CollectionConfig.name);
+       // console.log(JSON.stringify(config));
+        
+        assert(context1.CollectionConfig.name === 'Test Config' );
+        assert(context1.CollectionConfig.dataSourceType === 'xls' );
+        done();
+    });
     
 });
 

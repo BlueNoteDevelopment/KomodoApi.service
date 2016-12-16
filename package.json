@@ -32,7 +32,8 @@
     "test logger": "mocha tests\\logger_test.js -u tdd",
     "test utility": "mocha tests\\utility_test.js -u tdd",
     "test runtime storage": "mocha tests\\runtimestorage_test.js -u tdd",
-    "test execution context": "mocha tests\\exec_context_test.js -u tdd"
+    "test execution context": "mocha tests\\exec_context_test.js -u tdd",
+    "test konfig api": "mocha tests\\api_konfig_test.js -u tdd"
   },
   "license": "ISC",
   "devDependencies": {
