@@ -106,6 +106,15 @@ function notificationCallback(event,data){
     }else if(event==='CONFIGCHANGE'){
          var msg = "Execution Context Changed: "  + data.operation;
         _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
+    }else if(event === 'EXECFATALERROR'){
+        var msg = data.error.message + " occured in operation: " + data.operation
+        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{
+            //possible shut down execution loop
+        });
+        
+    }else if(event === 'RUNTIMEERROR'){
+        var msg = data.error.message + " occured in operation: " + data.operation
+        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{});
     }
     
     

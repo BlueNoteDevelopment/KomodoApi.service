@@ -228,6 +228,12 @@ function initializeService(initComplete) {
         fse.mkdirpSync(konfigfolder, '0777');
         config.settings.processing.konfigfolder = konfigfolder;
         
+        
+        var outboundfolder = __dirname + "/tmp/outbound";
+        fse.mkdirpSync(outboundfolder, '0777');
+        config.settings.processing.outboundfolder = outboundfolder;
+        
+        
         config.save(configfilename,(error,success)=>{
             initComplete();
         });
