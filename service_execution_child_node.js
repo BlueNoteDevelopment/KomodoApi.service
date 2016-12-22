@@ -87,7 +87,7 @@ function initialize(config,callback){
 }
 
 function notificationCallback(event,data){
-    console.log(event + "/" + data.error);
+    console.log(event + "/" + data.error +'/' + data.operation);
     if(event === 'INITCOMPLETE'){
         _exec_manager.start((error,success)=>{
             if(error){
