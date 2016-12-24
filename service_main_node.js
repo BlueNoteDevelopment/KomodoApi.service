@@ -204,7 +204,8 @@ function shutdownExecutionProcess(){
 function initializeService(initComplete) {
 
     var fse = require('fs-extra');
-
+    var path = require('path');
+    
     fse.mkdirpSync(__dirname + "/etc", '0777');
 
     
@@ -216,22 +217,25 @@ function initializeService(initComplete) {
             //console.log(JSON.stringify(config));
         }
         //create tmp/logs under root
-        var logfolder = __dirname + "/tmp/logs";
+        var logfolder = __dirname + path.sep + "tmp" + path.sep + "logs";
         fse.mkdirpSync(logfolder, '0777');
         config.settings.logging.folder =logfolder;
         
-        var procfolder = __dirname + "/tmp/processing";
+        var procfolder = __dirname + path.sep +  "tmp" + path.sep + "processing";
         fse.mkdirpSync(procfolder, '0777');
         config.settings.processing.processfolder = procfolder;
         
-        var konfigfolder = __dirname + "/etc/konfig";
+        var konfigfolder = __dirname + path.sep + "etc" + path.sep + "konfig";
         fse.mkdirpSync(konfigfolder, '0777');
         config.settings.processing.konfigfolder = konfigfolder;
         
         
-        var outboundfolder = __dirname + "/tmp/outbound";
+        var outboundfolder = __dirname +  path.sep + "tmp" + path.sep + "outbound";
         fse.mkdirpSync(outboundfolder, '0777');
         config.settings.processing.outboundfolder = outboundfolder;
+        
+        config.settings.runtime.basefolder = __dirname;
+        config.settings.runtime.binfolder = __dirname + path.sep + 'bin';
         
         
         config.save(configfilename,(error,success)=>{

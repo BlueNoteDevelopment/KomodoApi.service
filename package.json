@@ -32,7 +32,6 @@
     "test csvparser": "mocha tests\\csvparser_test.js -u tdd",
     "test odbc": "mocha tests\\odbc_api_test.js -u tdd",
     "test logger": "mocha tests\\logger_test.js -u tdd",
-    "test utility": "mocha tests\\utility_test.js -u tdd",
     "test runtime storage": "mocha tests\\runtimestorage_test.js -u tdd",
     "test execution context": "mocha tests\\exec_context_test.js -u tdd",
     "test konfig api": "mocha tests\\api_konfig_test.js -u tdd"
