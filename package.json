@@ -30,11 +30,10 @@
     "start": "node service_main_node.js",
     "test xlsparser": "mocha tests\\xlsparser_test.js -u tdd",
     "test csvparser": "mocha tests\\csvparser_test.js -u tdd",
-    "test odbc": "mocha tests\\odbc_api_test.js -u tdd",
+    "test api functions": "mocha tests\\api_test.js -u tdd",
     "test logger": "mocha tests\\logger_test.js -u tdd",
     "test runtime storage": "mocha tests\\runtimestorage_test.js -u tdd",
-    "test execution context": "mocha tests\\exec_context_test.js -u tdd",
-    "test konfig api": "mocha tests\\api_konfig_test.js -u tdd"
+    "test execution context": "mocha tests\\exec_context_test.js -u tdd"
   },
   "license": "ISC",
   "devDependencies": {
