@@ -1,0 +1,20 @@
+{
+  "internalApi": {
+    "port": 18963
+  },
+  "externalApi": {
+    "baseUrl": "https://komodoapi.evergrid.io/"
+  },
+  "logging": {
+    "folder": "./tmp/logs"
+  },
+  "processing": {
+    "processfolder": "./tmp/processing",
+    "konfigfolder": "./etc/konfig",
+    "outboundfolder": "./tmp/outbound"
+  },
+  "runtime": {
+    "basefolder": ".",
+    "binfolder": "./bin"
+  }
+}
