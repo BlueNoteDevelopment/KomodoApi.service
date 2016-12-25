@@ -72,6 +72,52 @@ suite('Database Connection Tests', function () {
         });
     });
     
+    test('should return a connection object of type mssql', function (done) {
+        var sc = require('../lib/service-config');
+        var DatabaseProcessor = require(libFileLocation);
+        
+        var configfilename = __dirname + "/temp/test.config.dat";
+
+        sc.load(configfilename,function(e,s){
+            if(!e){
+               var db = new DatabaseProcessor('mssql',sc);
+               
+               var o = db.createDbCommandObject();
+               assert(o.type === 'mssql');
+            }
+            
+            done();
+        });
+    });
+    
+        test('should return a datatable object of type mssql', function (done) {
+        var sc = require('../lib/service-config');
+        var DatabaseProcessor = require(libFileLocation);
+        
+        var configfilename = __dirname + "/temp/test.config.dat";
+
+        sc.load(configfilename,function(e,s){
+            if(!e){
+               var db = new DatabaseProcessor('mssql',sc);
+               
+               var o = db.createDbCommandObject();
+               
+               o.server = '.';
+               o.database = 'KomodoTest';
+               o.user='';
+               o.password = '';
+               o.command = 'SELECT * FROM Users';
+
+               db.executeSQL(o,(error,success,data)=>{
+                   
+                   assert(data.Cols.length > 0);
+                   done();
+               })
+            }
+            
+            
+        });
+    });
     
     
 });
