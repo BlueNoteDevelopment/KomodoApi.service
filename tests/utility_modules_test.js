@@ -124,7 +124,6 @@ suite('Runtime Storage Module Sync Tests', function () {
 
 });
 
-
 suite('Runtime Storage Module ASync Tests', function () {
 
     var libFileLocation = '../lib/runtime-storage';
@@ -284,6 +283,29 @@ suite('Utility Module Tests', function () {
         
         console.log(output);
         assert(output === '19740601');
+        done();
+    });
+
+    
+});
+
+suite('Query Parser Module Tests', function () {
+    
+    var libFileLocation = '../lib/query-param-parser';
+    
+    test('should get version from Query Parser', function (done) {
+        var q = require(libFileLocation);
+        assert(q.version === '1.0.0.0');
+        done();
+    });
+ 
+ 
+    test('should get a return value from Query Parser', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[f]}');
+        
+        assert(val === 'dt');
         done();
     });
 

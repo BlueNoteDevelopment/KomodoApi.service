@@ -32,7 +32,7 @@
     "test csvparser": "mocha tests\\csvparser_test.js -u tdd",
     "test api functions": "mocha tests\\api_test.js -u tdd",
     "test logger": "mocha tests\\logger_test.js -u tdd",
-    "test runtime storage": "mocha tests\\runtimestorage_test.js -u tdd",
+    "test other utility modues": "mocha tests\\utility_modules_test.js -u tdd",
     "test execution context": "mocha tests\\exec_context_test.js -u tdd",
     "test database processor": "mocha tests\\database_test.js -u tdd"   
   },
