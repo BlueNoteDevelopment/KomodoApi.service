@@ -304,10 +304,34 @@ suite('Query Parser Module Tests', function () {
         var q = require(libFileLocation);
         
         var val = q.resolveParam('{dt:lm[f]}');
+        console.log(val);
+        assert(val !== '');
+        done();
+    });
+    
+    test('should get a return 2016-11-01 from Query Parser {dt:lm[f]}', function (done) {
+        var q = require(libFileLocation);
         
-        assert(val === 'dt');
+        var val = q.resolveParam('{dt:lm[f]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01');
         done();
     });
 
-    
+    test('should get a return 2016-11-01 00:00:00 from Query Parser {dt:lm[f,sod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[f,sod]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01 00:00:00');
+        done();
+    });
+    test('should get a return 2016-11-01 23:59:59 from Query Parser {dt:lm[f,sod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[f,eod]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01 23:59:59');
+        done();
+    });
 });

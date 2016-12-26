@@ -20,6 +20,7 @@
     "js-csvparser": "^1.5.0",
     "lodash": "^4.17.2",
     "moment": "^2.17.1",
+    "moment-timezone": "^0.5.11",
     "mv": "^2.1.1",
     "node-cron": "^1.1.2",
     "node-sigint": "0.0.1",
@@ -34,7 +35,7 @@
     "test logger": "mocha tests\\logger_test.js -u tdd",
     "test other utility modues": "mocha tests\\utility_modules_test.js -u tdd",
     "test execution context": "mocha tests\\exec_context_test.js -u tdd",
-    "test database processor": "mocha tests\\database_test.js -u tdd"   
+    "test database processor": "mocha tests\\database_test.js -u tdd"
   },
   "license": "ISC",
   "devDependencies": {

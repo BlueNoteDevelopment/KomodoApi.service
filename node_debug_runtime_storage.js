@@ -78,7 +78,7 @@
 //    _running = false;
 //}, 10000);
 
-
+/*
 var cd = require('chokidar');
 
 var fw = cd.watch('C:\Projects\\komodoApi\\KomodoApi.Service\\tests\\konfig\\', {ignored: /[\/\\]\./, persistent: true ,ignoreInitial:false,awaitWriteFinish:true,depth:1  });
@@ -127,3 +127,80 @@ function waitForComplete(){
 
     }
 }
+*/
+
+var parser = require('./lib/query-param-parser');
+
+var param = parser.resolveParam('{dt:lm[f]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lm[f,sod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lm[f,eod]}');
+console.log(param);
+
+ param = parser.resolveParam('{dt:lm[l]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lm[l,sod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lm[l,eod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lm[l,sod]}', new Date(2017,2,12));
+console.log(param);
+
+console.log('--current--')
+param = parser.resolveParam('{dt:cm[f]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cm[f,sod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cm[f,eod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cm[l]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cm[l,sod]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cm[l,eod]}');
+console.log(param);
+
+console.log('--datepart--')
+param = parser.resolveParam('{dp:yr[]}');
+console.log(param);
+param = parser.resolveParam('{dp:yr[prev]}');
+console.log(param);
+param = parser.resolveParam('{dp:mo[]}');
+console.log(param);
+param = parser.resolveParam('{dp:mo[prev]}');
+console.log(param);
+param = parser.resolveParam('{dp:dy[]}');
+console.log(param);
+param = parser.resolveParam('{dp:dy[prev]}');
+console.log(param);
+
+var sql = 'SELECT * FROM USERS WHERE dateAdded <=\'{dt:lm[f]}\'';
+console.log(parser.processSQLStatement(sql));
+
+var sql = 'SELECT * FROM USERS WHERE dateAdded BETWEEN \'{dt:lm[f,sod]}\' AND \'{dt:lm[l,eod]}\'';
+console.log(parser.processSQLStatement(sql));
+
+var sql = 'SELECT * FROM USERS';
+console.log(parser.processSQLStatement(sql));
+
+
+var a = {x:1,y:1}
+
+function dostuff(t){
+    var newobj = JSON.parse(JSON.stringify(t));
+    
+    newobj.x=2;
+}
+dostuff(a);
+console.log(a)
