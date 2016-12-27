@@ -18,7 +18,24 @@ i.e.
 ValueType: dt
 
 
-| paramOption| Description| Options|
+| paramOption|Description|Options|
 | ------------- |-------------| -----|
 | lm (lastmonth)| last month from current | [f,l][sod,eod]|
 | cm (currentmonth)| current month | [f,l][sod,eod]|
+| lw (lastweek)| last week from current | [f,l][sod,eod][mon]|
+| cw (currentweek)| current week | [f,l][sod,eod][mon]|
+
+Options
+
+|Option|Used With|Description|
+|------|---------|-----------|
+|f {first}|lm,cm |first day of the month|
+|         |lw,cw |first day of the week |
+|l {last}|lm,cm |last day of the month|
+|         |lw,cw |last day of the week |
+|sod {startofday}|lm,cm,lw,cw |adds a time value of 00:00:00.0 to date|
+|eod {endofday}|lm,cm,lw,cw |adds a time value of 23:59:59.999 to date|
+|mon         |lw,cw |calculate start of week from Monday (End of week is Sunday)|
+
+
+

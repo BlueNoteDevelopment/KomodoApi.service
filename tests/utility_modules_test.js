@@ -326,7 +326,7 @@ suite('Query Parser Module Tests', function () {
         assert(val === '2016-11-01 00:00:00');
         done();
     });
-    test('should get a return 2016-11-01 23:59:59 from Query Parser {dt:lm[f,sod]}', function (done) {
+    test('should get a return 2016-11-01 23:59:59 from Query Parser {dt:lm[f,eod]}', function (done) {
         var q = require(libFileLocation);
         
         var val = q.resolveParam('{dt:lm[f,eod]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
@@ -334,4 +334,61 @@ suite('Query Parser Module Tests', function () {
         assert(val === '2016-11-01 23:59:59');
         done();
     });
+    
+        test('should get a return 2016-11-30 from Query Parser {dt:lm[l]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[l]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-30');
+        done();
+    });
+
+    test('should get a return 2016-11-30 00:00:00 from Query Parser {dt:lm[l,sod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[l,sod]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-30 00:00:00');
+        done();
+    });
+    test('should get a return 2016-11-30 23:59:59 from Query Parser {dt:lm[l,eod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:lm[l,eod]}',new Date(2016,11,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-30 23:59:59');
+        done();
+    });
+    
+    
+    
+    test('should get a return 2016-11-01 from Query Parser {dt:cm[f]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:cm[f]}',new Date(2016,10,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01');
+        done();
+    });
+
+    test('should get a return 2016-11-01 00:00:00 from Query Parser {dt:cm[f,sod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:cm[f,sod]}',new Date(2016,10,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01 00:00:00');
+        done();
+    });
+    test('should get a return 2016-11-01 23:59:59 from Query Parser {dt:cm[f,eod]}', function (done) {
+        var q = require(libFileLocation);
+        
+        var val = q.resolveParam('{dt:cm[f,eod]}',new Date(2016,10,26));  //month is 0 based, so this is 12/26/2016
+        //console.log(val);
+        assert(val === '2016-11-01 23:59:59');
+        done();
+    });
+    
+    
+    
 });

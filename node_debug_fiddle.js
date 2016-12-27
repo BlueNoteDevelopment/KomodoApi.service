@@ -185,22 +185,42 @@ console.log(param);
 param = parser.resolveParam('{dp:dy[prev]}');
 console.log(param);
 
+console.log('--date last week--')
+param = parser.resolveParam('{dt:lw[f]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lw[l]}');
+console.log(param);
+
+console.log('--date current week--')
+param = parser.resolveParam('{dt:cw[f]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cw[l]}');
+console.log(param);
+
+console.log('--date last week monday--')
+param = parser.resolveParam('{dt:lw[f,mon]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:lw[l,mon]}');
+console.log(param);
+
+console.log('--date current week monday--')
+param = parser.resolveParam('{dt:cw[f,mon]}');
+console.log(param);
+
+param = parser.resolveParam('{dt:cw[l,mon]}');
+console.log(param);
+
+
+console.log('--SQL last week--')
+
 var sql = 'SELECT * FROM USERS WHERE dateAdded <=\'{dt:lm[f]}\'';
 console.log(parser.processSQLStatement(sql));
 
 var sql = 'SELECT * FROM USERS WHERE dateAdded BETWEEN \'{dt:lm[f,sod]}\' AND \'{dt:lm[l,eod]}\'';
-console.log(parser.processSQLStatement(sql));
+console.log(parser.processSQLStatement(sql,'2016-05-28'));
 
 var sql = 'SELECT * FROM USERS';
 console.log(parser.processSQLStatement(sql));
-
-
-var a = {x:1,y:1}
-
-function dostuff(t){
-    var newobj = JSON.parse(JSON.stringify(t));
-    
-    newobj.x=2;
-}
-dostuff(a);
-console.log(a)
