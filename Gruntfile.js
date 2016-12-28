@@ -8,9 +8,23 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-babel');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jshint : {
+            options:{
+                reporter : require('jshint-stylish'),
+                force :  true
+            },
+          all: ['service_execution_child_node.js','service_main_node.js', './lib/*.js']  
+        },
+        clean : {
+            dist: ['./dist/*']
+            
+        },
         jsdoc : {
             dist : {
                 src: ['lib/*.js'],
@@ -25,8 +39,50 @@ module.exports = function (grunt) {
                 
                 files : [        
                     {src: ['package.json', 'service_execution_child_node.js', 'service_main_node.js'], dest: './dist/'},
-                    {src: ['./lib/*.js'], dest: '/dist/lib/', filter: 'isFile'}
+                    {src: ['./lib/*.js'], dest: './dist/', filter: 'isFile'},
+                    {src: ['./bin/*.dll'], dest: './dist/', filter: 'isFile'}
                 ]           
+            }
+        },
+        babel : {
+            options: {
+                sourceMap: false,
+                presets: ['babel-preset-es2015']
+            },
+            dist: {
+                files: {
+                        './dist/lib/collection-config-factory.js': ['./dist/lib/collection-config-factory.js'],
+                        './dist/lib/csvparser.js': ['./dist/lib/csvparser.js'],
+                        './dist/lib/database-processor.js': ['./dist/lib/database-processor.js'],
+                        './dist/lib/execution-context.js': ['./dist/lib/execution-context.js'],
+                        './dist/lib/execution-manager.js': ['./dist/lib/execution-manager.js'],
+                        './dist/lib/logger.js': ['./dist/lib/logger.js'],
+                        './dist/lib/query-param-parser.js': ['./dist/lib/query-param-parser.js'],
+                        './dist/lib/runtime-storage.js': ['./dist/lib/runtime-storage.js'],
+                        './dist/lib/service-config.js': ['./dist/lib/service-config.js'],
+                        './dist/lib/utility.js': ['./dist/lib/utility.js'],
+                        './dist/lib/xlsparser.js': ['./dist/lib/xlsparser.js']
+                }
+            }
+        },
+        uglify :{
+            options: {
+                mangle: true
+                },
+                my_target: {
+                    files: {
+                        './dist/lib/collection-config-factory.js': ['./dist/lib/collection-config-factory.js'],
+                        './dist/lib/csvparser.js': ['./dist/lib/csvparser.js'],
+                        './dist/lib/database-processor.js': ['./dist/lib/database-processor.js'],
+                        './dist/lib/execution-context.js': ['./dist/lib/execution-context.js'],
+                        './dist/lib/execution-manager.js': ['./dist/lib/execution-manager.js'],
+                        './dist/lib/logger.js': ['./dist/lib/logger.js'],
+                        './dist/lib/query-param-parser.js': ['./dist/lib/query-param-parser.js'],
+                        './dist/lib/runtime-storage.js': ['./dist/lib/runtime-storage.js'],
+                        './dist/lib/service-config.js': ['./dist/lib/service-config.js'],
+                        './dist/lib/utility.js': ['./dist/lib/utility.js'],
+                        './dist/lib/xlsparser.js': ['./dist/lib/xlsparser.js']
+                    }
             }
         }
         
@@ -34,6 +90,6 @@ module.exports = function (grunt) {
         }
     );
     
-    grunt.registerTask('default', ['jsdoc','copy']);
-    
+    grunt.registerTask('default', ['clean','jsdoc','copy','babel','uglify']);
+    grunt.registerTask('pre-dev', ['clean','jsdoc','copy','babel']);
 };

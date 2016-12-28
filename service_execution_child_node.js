@@ -1,3 +1,5 @@
+'use strict';
+
 /* 
 * MODULE: service_execution_child_node.js
 * Executes Service loop as a sub-process of main service
@@ -25,7 +27,7 @@ var _running = true;
  */
 
 process.on('message', (m)=>{
-    console.log('Exec Node Message:' + JSON.stringify(m));
+    //console.log('Exec Node Message:' + JSON.stringify(m));
     if(m.command==='START'){
         initialize(m.serviceconfig,(error,success)=>{
             if(error){
