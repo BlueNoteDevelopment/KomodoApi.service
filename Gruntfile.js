@@ -6,7 +6,8 @@
 module.exports = function (grunt) {
     // Project configuration.
     grunt.loadNpmTasks('grunt-jsdoc');
-    
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -14,14 +15,25 @@ module.exports = function (grunt) {
             dist : {
                 src: ['lib/*.js'],
                 options: {
-                    destination: 'doc',
+                    destination: './dist/doc',
                     configure: './jsdoc.json'
                     }
                 }
+            },
+        copy : {
+            dist: {
+                
+                files : [        
+                    {src: ['package.json', 'service_execution_child_node.js', 'service_main_node.js'], dest: './dist/'},
+                    {src: ['./lib/*.js'], dest: '/dist/lib/', filter: 'isFile'}
+                ]           
             }
+        }
+        
+            
         }
     );
     
-    grunt.registerTask('default', ['jsdoc']);
+    grunt.registerTask('default', ['jsdoc','copy']);
     
 };

@@ -5,6 +5,7 @@ npm-debug.log*
 tmp
 etc
 doc
+dist
 
 # Runtime data
 pids
