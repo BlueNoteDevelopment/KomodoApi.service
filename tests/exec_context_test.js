@@ -11,7 +11,7 @@ suite('ExecutionContext Module Tests', function () {
     test('should get version from ExecutionContext', function (done) {
         var ExecutionContext = require(libFileLocation);
         
-        var context = new ExecutionContext(null);
+        var context = new ExecutionContext({name:"object1", dataSourceType:'csv'});
         assert(context.version === '1.0.0.0');
         done();
     });
@@ -19,8 +19,8 @@ suite('ExecutionContext Module Tests', function () {
     test('should get 2 different ExecutionContext objects', function (done) {
         var ExecutionContext = require(libFileLocation);
         
-        var context1 = new ExecutionContext({name:"object1"});
-        var context2 = new ExecutionContext({name:"object2"});
+        var context1 = new ExecutionContext({name:"object1", dataSourceType:'csv'});
+        var context2 = new ExecutionContext({name:"object2", dataSourceType:'csv'});
         
         //console.log(context1.CollectionConfig.name);
         //console.log(context2.CollectionConfig.name);

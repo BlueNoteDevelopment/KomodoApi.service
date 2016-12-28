@@ -1,3 +1,4 @@
+/*jslint node: true */
 'use strict';
 
 /* 
@@ -64,7 +65,7 @@ function shutdown(callback){
     
     _exec_manager.halt((error,success)=>{
         _running = false;
-       return callback(error,success)
+       return callback(error,success);
     });
 
 }
@@ -89,6 +90,7 @@ function initialize(config,callback){
 }
 
 function notificationCallback(event,data){
+    var msg ='';
     console.log(event + "/" + data.error +'/' + data.operation);
     if(event === 'INITCOMPLETE'){
         _exec_manager.start((error,success)=>{
@@ -99,23 +101,23 @@ function notificationCallback(event,data){
             }
         });
     }else if (event === 'ERROR'){
-        var msg = data.error.message + " occured in operation: " + data.operation + " " + (data.path === null || data.path ===undefined) ? "" : " File Path: " + data.path;  ;
+         msg = data.error.message + " occured in operation: " + data.operation + " " + (data.path === null || data.path ===undefined) ? "" : " File Path: " + data.path;
         _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{});
     }else if(event === 'START'){
-         var msg = "Execution Manager Started";
+         msg = "Execution Manager Started";
         _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
 
     }else if(event==='CONFIGCHANGE'){
-         var msg = "Execution Context Changed: "  + data.operation;
+         msg = "Execution Context Changed: "  + data.operation;
         _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
     }else if(event === 'EXECFATALERROR'){
-        var msg = data.error.message + " occured in operation: " + data.operation
+        msg = data.error.message + " occured in operation: " + data.operation;
         _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{
             //possible shut down execution loop
         });
         
     }else if(event === 'RUNTIMEERROR'){
-        var msg = data.error.message + " occured in operation: " + data.operation
+         msg = data.error.message + " occured in operation: " + data.operation;
         _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{});
     }
     

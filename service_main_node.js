@@ -6,7 +6,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var edge = require('edge');
 var config = require('./lib/service-config');
-var logger = require('./lib/logger')
+var logger = require('./lib/logger');
 var cp = require('child_process');
 
 var configfilename = '';

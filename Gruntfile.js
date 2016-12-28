@@ -17,7 +17,11 @@ module.exports = function (grunt) {
         jshint : {
             options:{
                 reporter : require('jshint-stylish'),
-                force :  true
+                force :  true,
+                esversion: 6,
+                laxcomma : true,
+                loopfunc: true,
+                '-W014' : true
             },
           all: ['service_execution_child_node.js','service_main_node.js', './lib/*.js']  
         },
@@ -90,6 +94,5 @@ module.exports = function (grunt) {
         }
     );
     
-    grunt.registerTask('default', ['clean','jsdoc','copy','babel','uglify']);
-    grunt.registerTask('pre-dev', ['clean','jsdoc','copy','babel']);
+    grunt.registerTask('default', ['jshint','clean','jsdoc','copy','babel','uglify']);
 };
