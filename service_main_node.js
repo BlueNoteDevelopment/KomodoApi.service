@@ -9,8 +9,9 @@ var config = require('./lib/service-config');
 var logger = require('./lib/logger');
 var cp = require('child_process');
 
-var configfilename = '';
+
 var executionProcess = null;
+var configfilename = __dirname + "/etc/service.config.dat";
 
 require('node-sigint');
 
@@ -179,7 +180,12 @@ initializeService(function () {
                 res.status(500).send(error);
             }else{
                 if(response.statusCode === 201){
-                    res.status(response.statusCode).send(body);
+                    
+                    config.settings.externalApi.baseUrl = 'https://' + req.body.host;
+                    config.settings.externalApi.token = body.token;
+                    config.save(configfilename,(error,success)=>{
+                        res.status(200).send(body);
+                    });
                 }else{
                     res.status(response.statusCode).send(response.error);
                 }
@@ -249,7 +255,7 @@ function initializeService(initComplete) {
     fse.mkdirpSync(__dirname + "/etc", '0777');
 
     
-    configfilename = __dirname + "/etc/service.config.dat";
+    
     config.load(configfilename, function (error) {
         if (error) {
             console.log("Config file not loaded:" + error.message + ". Using defaults");
