@@ -151,6 +151,46 @@ initializeService(function () {
         
       });    
 
+    //authorize service
+    app.post('/api/service/authorize', function (req, res) {
+        console.log('api service authorize - ' + req.body.server);
+
+        if(req.headers.token === undefined || req.headers.token === ''){
+            return res.status(403).send(new Error('Invalid Request'));
+        }
+        var os = require('os');
+        
+        var request = require('request');
+        var options = {
+            url: 'https://' + req.body.host + '/auth/token/service?XDEBUG_SESSION_START=netbeans-xdebug&a=1',
+            headers: {
+              'Authorization': 'bearer ' + req.headers.token
+            },
+            json : true,
+            strictSSL : false,
+            body: {
+                'servicehostname' : os.hostname(),
+                'scopes' : ['config.all']
+            }
+          };
+        
+        request.post(options, function(error, response, body){
+            if(error){
+                res.status(500).send(error);
+            }else{
+                if(response.statusCode === 201){
+                    res.status(response.statusCode).send(body);
+                }else{
+                    res.status(response.statusCode).send(response.error);
+                }
+            }
+        });
+
+        
+
+
+    });      
+    
 
     app.listen(app.get('port'), function () {
         console.log('KomodoApi Service Started on port ' + app.get('port'));
