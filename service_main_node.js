@@ -123,7 +123,7 @@ initializeService(function () {
         entry.persistTo = req.body.persistTo;
         entry.collectionId = req.body.collectioinId;
 
-        logger.addLogEntry(entry, config.settings.logging.folder, function (error, success) {
+        logger.addLogEntry(entry, config, function (error, success) {
             if (error) {
                 res.status(500).send(error);
                 console.log(error);
@@ -216,11 +216,11 @@ function startExecutionProcess(){
     executionProcess.on('message' ,(m)=>{
             if(m.command==='START'){
                 if(m.data.response === 'OK'){
-                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config,(e,s)=>{});
                     console.log('Execution Process Start Pid:' + executionProcess.pid );
                     
                 }else{
-                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config,(e,s)=>{});
                     console.log('Execution Process Fail:' + m.data.error.message );
                 }
 
