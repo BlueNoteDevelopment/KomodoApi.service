@@ -7,6 +7,24 @@ suite('ExecutionContext Module Tests', function () {
     var libFileLocation = '../lib/execution-context';
     var libConfigLocation = '../lib/collection-config-factory';
     
+    var svcConfig = null;
+    var dropFolder = '';
+    suiteSetup(function () {
+        fs = require('fs-extra');
+        
+        fs.mkdirpSync('./tests/temp/context/drop',777);
+        fs.mkdirpSync('./tests/temp/context/processing',777);
+        fs.mkdirpSync('./tests/temp/context/outbound',777);
+        
+        dropFolder = __dirname + '/' + 'temp/context/drop';
+        console.log(dropFolder);
+        
+        svcConfig = require('../lib/service-config');
+        svcConfig.settings.processing.outboundfolder =  __dirname + '/' + 'temp/context/outbound';
+        svcConfig.settings.processing.processfolder  =  __dirname + '/' + 'temp/context/processing';
+        //fs.emptyDirSync('./tests/temp/');
+        
+    });
     
     test('should get version from ExecutionContext', function (done) {
         var ExecutionContext = require(libFileLocation);
@@ -47,7 +65,59 @@ suite('ExecutionContext Module Tests', function () {
         done();
     });
     
+    
+    test('should get a new ExecutionContext objects for csv data type', function (done) {
+        var ExecutionContext = require(libFileLocation);
+        var ConfigFactory = require(libConfigLocation);
+       
+        var config = ConfigFactory.Create('Test Config CSV','csv');
         
+        var context1 = new ExecutionContext(config);
+        context1.Start((e,s)=>{});
+        
+        //console.log(context1.CollectionConfig.name);
+       // console.log(JSON.stringify(config));
+        
+        assert(context1.CollectionConfig.name === 'Test Config CSV' );
+        assert(context1.CollectionConfig.dataSourceType === 'csv' );
+        done();
+    });
+    
+
+    test('should get a new ExecutionContext objects for odbc data type', function (done) {
+        var ExecutionContext = require(libFileLocation);
+        var ConfigFactory = require(libConfigLocation);
+       
+        var config = ConfigFactory.Create('Test Config ODBC','odbc');
+        
+        var context1 = new ExecutionContext(config);
+        context1.Start((e,s)=>{});
+        
+        //console.log(context1.CollectionConfig.name);
+       // console.log(JSON.stringify(config));
+        
+        assert(context1.CollectionConfig.name === 'Test Config ODBC' );
+        assert(context1.CollectionConfig.dataSourceType === 'odbc' );
+        done();
+    });
+
+    test('should get a new ExecutionContext objects for mssql data type', function (done) {
+        var ExecutionContext = require(libFileLocation);
+        var ConfigFactory = require(libConfigLocation);
+       
+        var config = ConfigFactory.Create('Test Config mssql','mssql');
+        
+        var context1 = new ExecutionContext(config);
+        context1.Start((e,s)=>{});
+        
+        //console.log(context1.CollectionConfig.name);
+       // console.log(JSON.stringify(config));
+        
+        assert(context1.CollectionConfig.name === 'Test Config mssql' );
+        assert(context1.CollectionConfig.dataSourceType === 'mssql' );
+        done();
+    });
+    
     test('should create 2 ExecutionContext objects for xls data type and start', function (done) {
         var ExecutionContext = require(libFileLocation);
         var ConfigFactory = require(libConfigLocation);
