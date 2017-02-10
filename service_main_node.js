@@ -9,8 +9,9 @@ var config = require('./lib/service-config');
 var logger = require('./lib/logger');
 var cp = require('child_process');
 
-var configfilename = '';
+
 var executionProcess = null;
+var configfilename = __dirname + "/etc/service.config.dat";
 
 require('node-sigint');
 
@@ -122,7 +123,14 @@ initializeService(function () {
         entry.persistTo = req.body.persistTo;
         entry.collectionId = req.body.collectioinId;
 
-        logger.addLogEntry(entry, config.settings.logging.folder, function (error, success) {
+        logger.addLogEntry(entry, config, function (error, success) {
+            
+            if (entry.persistTo === 'server'  || entry.persistTo === 'both' ){
+                //wait for 2nd callback
+            }else{
+                
+            }
+            
             if (error) {
                 res.status(500).send(error);
                 console.log(error);
@@ -151,6 +159,51 @@ initializeService(function () {
         
       });    
 
+    //authorize service
+    app.post('/api/service/authorize', function (req, res) {
+        console.log('api service authorize - ' + req.body.server);
+
+        if(req.headers.token === undefined || req.headers.token === ''){
+            return res.status(403).send(new Error('Invalid Request'));
+        }
+        var os = require('os');
+        
+        var request = require('request');
+        var options = {
+            url: 'https://' + req.body.host + '/auth/token/service?XDEBUG_SESSION_START=netbeans-xdebug&a=1',
+            headers: {
+              'Authorization': 'bearer ' + req.headers.token
+            },
+            json : true,
+            strictSSL : false,
+            body: {
+                'servicehostname' : os.hostname(),
+                'scopes' : ['config.all']
+            }
+          };
+        
+        request.post(options, function(error, response, body){
+            if(error){
+                res.status(500).send(error);
+            }else{
+                if(response.statusCode === 201){
+                    
+                    config.settings.externalApi.baseUrl = 'https://' + req.body.host;
+                    config.settings.externalApi.token = body.token;
+                    config.save(configfilename,(error,success)=>{
+                        res.status(200).send(body);
+                    });
+                }else{
+                    res.status(response.statusCode).send(response.error);
+                }
+            }
+        });
+
+        
+
+
+    });      
+    
 
     app.listen(app.get('port'), function () {
         console.log('KomodoApi Service Started on port ' + app.get('port'));
@@ -170,11 +223,11 @@ function startExecutionProcess(){
     executionProcess.on('message' ,(m)=>{
             if(m.command==='START'){
                 if(m.data.response === 'OK'){
-                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config,(e,s)=>{});
                     console.log('Execution Process Start Pid:' + executionProcess.pid );
                     
                 }else{
-                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config.settings.logging.folder,(e,s)=>{});
+                    logger.addLogQuickEntryLocal('service','Execution Process Start Pid:' + executionProcess.pid ,1,null,config,(e,s)=>{});
                     console.log('Execution Process Fail:' + m.data.error.message );
                 }
 
@@ -209,7 +262,7 @@ function initializeService(initComplete) {
     fse.mkdirpSync(__dirname + "/etc", '0777');
 
     
-    configfilename = __dirname + "/etc/service.config.dat";
+    
     config.load(configfilename, function (error) {
         if (error) {
             console.log("Config file not loaded:" + error.message + ". Using defaults");

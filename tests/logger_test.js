@@ -56,13 +56,15 @@ suite('LOGGER Module Tests', function () {
             clientId:'', //client account id
             persistTo:'both' //server,local,both
          */    
-
+        
+        var config = require('../lib/service-config');
+        config.settings.logging.folder = './tmp/logs';
          obj.logName = "test";
          obj.message = "test message";
          obj.clientid = 'test'
          obj.persistTo = 'local';
          
-         log.addLogEntry(obj,'./tmp/logs',function(error,success){
+         log.addLogEntry(obj,config,function(error,success){
             if(error){
                 console.log(JSON.stringify(error));
             }
@@ -74,8 +76,9 @@ suite('LOGGER Module Tests', function () {
 
     test('should write a quick logentry object to file', function (done) {
         var log = require(libFileLocation);
-    
-        log.addLogQuickEntryLocal('test','Test Message Quick',1,{data:'test',value:1},'./tmp/logs',function(error,success){
+        var config = require('../lib/service-config');
+        config.settings.logging.folder = './tmp/logs';
+        log.addLogQuickEntryLocal('test','Test Message Quick',1,{data:'test',value:1},config,function(error,success){
             if(error){
                 console.log(JSON.stringify(error));
             }
@@ -111,6 +114,29 @@ suite('LOGGER Module Tests', function () {
   
     });
     
+    test('should write a logentry object to server via API', function (done) {
+        var log = require(libFileLocation);
+        var obj = log.createLogEntryObject();
+        obj.level = 1;
+
+        obj.logName = "apitest";
+        obj.message = "api test message to server";
+        obj.clientid = 'api test'
+        obj.persistTo = 'server';
+         
+
+        rest.post(base + '/api/logging', {data: obj}).on('complete', function (data) {
+            //console.log(JSON.stringify(data));
+            assert(data.Error === undefined);
+            assert(data.result === true);
+            done();
+        });
+
+         
+         
+         
+  
+    });
     
     
 });

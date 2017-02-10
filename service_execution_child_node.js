@@ -56,7 +56,7 @@ function addLogEntry(entry,callback){
         return;  
     }
     
-    _logger.addLogEntry(entry,_service_config.settings.logging.folder,(error,success)=>{
+    _logger.addLogEntry(entry,_service_config,(error,success)=>{
         if(callback){callback(error,success);}
     });
 }
@@ -102,23 +102,23 @@ function notificationCallback(event,data){
         });
     }else if (event === 'ERROR'){
          msg = data.error.message + " occured in operation: " + data.operation + " " + (data.path === null || data.path ===undefined) ? "" : " File Path: " + data.path;
-        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{});
+        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config,(e,s)=>{});
     }else if(event === 'START'){
          msg = "Execution Manager Started";
-        _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
+        _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config,(e,s)=>{});
 
     }else if(event==='CONFIGCHANGE'){
          msg = "Execution Context Changed: "  + data.operation;
-        _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config.settings.logging.folder,(e,s)=>{});
+        _logger.addLogQuickEntryLocal('service',msg,1,data, _service_config,(e,s)=>{});
     }else if(event === 'EXECFATALERROR'){
         msg = data.error.message + " occured in operation: " + data.operation;
-        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{
+        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config,(e,s)=>{
             //possible shut down execution loop
         });
         
     }else if(event === 'RUNTIMEERROR'){
          msg = data.error.message + " occured in operation: " + data.operation;
-        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config.settings.logging.folder,(e,s)=>{});
+        _logger.addLogQuickEntryLocal('service',msg,3,data, _service_config,(e,s)=>{});
     }
     
     
