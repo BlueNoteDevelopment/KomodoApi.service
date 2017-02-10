@@ -114,6 +114,29 @@ suite('LOGGER Module Tests', function () {
   
     });
     
+    test('should write a logentry object to server via API', function (done) {
+        var log = require(libFileLocation);
+        var obj = log.createLogEntryObject();
+        obj.level = 1;
+
+        obj.logName = "apitest";
+        obj.message = "api test message to server";
+        obj.clientid = 'api test'
+        obj.persistTo = 'server';
+         
+
+        rest.post(base + '/api/logging', {data: obj}).on('complete', function (data) {
+            //console.log(JSON.stringify(data));
+            assert(data.Error === undefined);
+            assert(data.result === true);
+            done();
+        });
+
+         
+         
+         
+  
+    });
     
     
 });

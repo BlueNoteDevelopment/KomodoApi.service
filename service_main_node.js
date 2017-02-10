@@ -124,6 +124,13 @@ initializeService(function () {
         entry.collectionId = req.body.collectioinId;
 
         logger.addLogEntry(entry, config, function (error, success) {
+            
+            if (entry.persistTo === 'server'  || entry.persistTo === 'both' ){
+                //wait for 2nd callback
+            }else{
+                
+            }
+            
             if (error) {
                 res.status(500).send(error);
                 console.log(error);
