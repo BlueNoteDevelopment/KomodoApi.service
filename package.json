@@ -36,7 +36,8 @@
     "test logger": "mocha tests\\logger_test.js -u tdd",
     "test other utility modues": "mocha tests\\utility_modules_test.js -u tdd",
     "test execution context": "mocha tests\\exec_context_test.js -u tdd",
-    "test database processor": "mocha tests\\database_test.js -u tdd"
+    "test database processor": "mocha tests\\database_test.js -u tdd",
+    "test server operations": "mocha tests\\serverops_test.js -u tdd"    
   },
   "license": "ISC",
   "devDependencies": {
