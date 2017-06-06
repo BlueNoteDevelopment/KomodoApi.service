@@ -84,6 +84,7 @@ module.exports = function (grunt) {
                         './dist/lib/query-param-parser.js': ['./dist/lib/query-param-parser.js'],
                         './dist/lib/runtime-storage.js': ['./dist/lib/runtime-storage.js'],
                         './dist/lib/service-config.js': ['./dist/lib/service-config.js'],
+                        './dist/lib/server-operations.js': ['./dist/lib/server-operations.js'],
                         './dist/lib/utility.js': ['./dist/lib/utility.js'],
                         './dist/lib/xlsparser.js': ['./dist/lib/xlsparser.js']
                     }

@@ -169,8 +169,6 @@ suite('Execution Manager Module Tests', function () {
             config.dataSource.folderToWatch = pathProcessing;
             fs.writeJsonSync(pathConfigFiles + 'TestConfig' + i + '.konfig',config,{encoding: 'utf-8'});
         }
-
-        
     });
 
     test('should get version from ExecutionManager', function (done) {
@@ -182,6 +180,7 @@ suite('Execution Manager Module Tests', function () {
  
     test('should get load all files from konfig folder', function (done) {
         var exec = require(libFileLocation);
+        
         config.settings.processing.konfigfolder = pathConfigFiles;
         
         exec.init(config,function(evt,data){
@@ -192,7 +191,7 @@ suite('Execution Manager Module Tests', function () {
                 assert(exec.getExecutionContextCount() ===maxTestFiles);
                 
             }
-            
+
             done();
         });
         
@@ -202,23 +201,52 @@ suite('Execution Manager Module Tests', function () {
     
     
     test('should throw error reading directory', function (done) {
-    var exec = require(libFileLocation);
-    config.settings.processing.konfigfolder = 'X:\\';
-    exec.init(config,function(evt,data){
+        var exec = require(libFileLocation);
+        var oldPath = config.settings.processing.konfigfolder ;
+        config.settings.processing.konfigfolder = 'X:\\';
+        exec.init(config,function(evt,data){
 
-        //console.log(evt);
-        if(evt === 'INITCOMPLETE'){
-            assert(3===5); //fail
-        }else if(evt === 'ERROR' ){
-            //console.log(JSON.stringify(data));
-            assert(data.operation ==='load konfig directory')
-        }
-
-        done();
+            //console.log(evt);
+            if(evt === 'INITCOMPLETE'){
+                assert(3===5); //fail
+            }else if(evt === 'ERROR' ){
+                //console.log(JSON.stringify(data));
+                assert(data.operation ==='load konfig directory')
+            }
+            config.settings.processing.konfigfolder = oldPath;
+            done();
+        });
     });
-        
 
+
+    test('should load a new konfig file', function(done){
+       var exec = require(libFileLocation);
+        
+       exec.init(config,function(evt,data){
+
+            //console.log(evt);
+            if(evt === 'INITCOMPLETE'){
+                
+                var serverOps = {};
+                
+                serverOps.getKonfigFilesFromServer = function(host,config,callback){
+                    callback(null, [{id:1,configuration_name:'Test Load 1',is_enabled:true,data:{name:"Test Load 1",dataSourceType:"xls",isActive:true} }]);
+                }
+                
+               exec.loadKonfigFromServer(serverOps,function(error,success){
+                   console.log(JSON.stringify(error));
+                   assert(success===true);
+                   
+               });
+                
+            }else if(evt === 'ERROR' ){
+                assert(3===5); //fail
+            }
+            done();
+        }); 
+        
         
     });
+
 
 });

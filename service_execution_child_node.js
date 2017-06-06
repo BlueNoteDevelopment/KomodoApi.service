@@ -43,6 +43,14 @@ process.on('message', (m)=>{
         });
     }else if (m.command === 'PING'){
         process.send({command:'PING', data:{response:'OK'}});
+    }else if(m.command === 'RELOADKONFIG'){
+        if(_exec_manager.isExecutionRunning()===false){
+            process.send({command:'RELOADKONFIG', data:{response:'ERROR',error: new Error('Execution Not Started')}});
+            return;
+        }
+        
+        
+        process.send({command:'RELOADKONFIG', data:{response:'OK'}});
     }
     
 });
